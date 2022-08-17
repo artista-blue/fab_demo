@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+
+  web:
+    build: ./flask
+    volumes:
+      - ./flask:/app
+    ports:
+      - 5000:5000
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - DATABASE_URI=postgresql://${db_user}:${db_password}@db:5432/${db_database}
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${db_user}
+      - POSTGRES_PASSWORD=${db_password}
+      - POSTGRES_DB=${db_database}
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: "pg_isready --username=${db_user} && psql --username=${db_user} --list"
+      timeout: 10s
+      retries: 20
