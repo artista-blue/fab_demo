@@ -15,3 +15,8 @@ http://localhost:5000   (user:password: admin:admin)
 docker-compose down
 rm -rf data
 ```
+
+### Connect to DB
+```
+. .env; PGPASSWORD=${db_password} psql -h localhost -p $db_port -U $db_user -d $db_database
+```
