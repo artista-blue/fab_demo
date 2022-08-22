@@ -4,7 +4,7 @@
 ```
 docker-compose up -d --build
 docker-compose ps
-docker exec -it fab_demo_web_1 /bin/bash ./init_db
+docker-compose exec web /bin/bash ./init_db
 ```
 
 ### Login
