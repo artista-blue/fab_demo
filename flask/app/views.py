@@ -44,20 +44,6 @@ class TaskProgressModelView(ModelView):
     ]
     base_filters = [['', CustomAdminFilter, None]]
 
-class ProjectModelView(ModelView):
-    """Model View for the Projects Table"""
-    datamodel = SQLAInterface(Projects)
-    related_views = [TaskProgressModelView]
-
-    label_columns = {'projects':'Projects'}
-    list_columns = ['id','project_name','description']
-    show_fieldsets = [
-        (
-            'Projects',
-            {'fields': ['id', 'project_name', 'description']}
-        ),
-    ]
-
 class TaskModelView(ModelView):
     """Model View for the Tasks Table"""
     datamodel = SQLAInterface(Tasks)
@@ -69,6 +55,20 @@ class TaskModelView(ModelView):
         (
             'Tasks',
             {'fields': ['id', 'task_name', 'description', 'project_id']}
+        ),
+    ]
+
+class ProjectModelView(ModelView):
+    """Model View for the Projects Table"""
+    datamodel = SQLAInterface(Projects)
+    related_views = [TaskModelView]
+
+    label_columns = {'projects':'Projects'}
+    list_columns = ['id','project_name','description']
+    show_fieldsets = [
+        (
+            'Projects',
+            {'fields': ['id', 'project_name', 'description']}
         ),
     ]
 
