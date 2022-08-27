@@ -5,7 +5,7 @@ import logging
 from sqlalchemy import exc
 
 from app import appbuilder, db
-from app.models import Tasks, Projects
+from app.models import Task, Project
 
 log = logging.getLogger(__name__)
 
@@ -22,9 +22,9 @@ if role_engineer is None:
     role_engineer = appbuilder.sm.find_role('engineers')
 
 for pv in role_admin.permissions:
-    if ('Tasks' in pv.__repr__() or \
+    if ('Task' in pv.__repr__() or \
         'TaskModelView' in pv.__repr__() or \
-        'Projects' in pv.__repr__() or \
+        'Project' in pv.__repr__() or \
         'ProjectModelView' in pv.__repr__() \
        ) and not ( \
         'add' in pv.__repr__() or \
@@ -51,7 +51,7 @@ if role_public is None:
 for pv in role_admin.permissions:
     if ('Task Progress' in pv.__repr__() or \
         'TaskProgressModelView' in pv.__repr__() or
-        'Tasks Projects' in pv.__repr__() \
+        'Task Project' in pv.__repr__() \
         ) and not ( \
         'add' in pv.__repr__() or \
         'delete' in pv.__repr__() or \
@@ -79,8 +79,8 @@ user3 = appbuilder.sm.add_user(
 
 ###################### adding projects ################################
 try:
-    db.session.add(Projects(id=1, project_name="Proj-1"))
-    db.session.add(Projects(id=2, project_name="Proj-2"))
+    db.session.add(Project(id=1, name="Proj-1"))
+    db.session.add(Project(id=2, name="Proj-2"))
     db.session.commit()
 except exc.SQLAlchemyError as err:
     log.error("Project creation error: %s", err)
@@ -89,14 +89,14 @@ except exc.SQLAlchemyError as err:
 
 ############################# adding tasks ############################
 try:
-    db.session.add(Tasks(id=1, task_name="P1T1", project_id=1))
-    db.session.add(Tasks(id=2, task_name="P1T2", project_id=1))
-    db.session.add(Tasks(id=3, task_name="P1T3", project_id=1))
-    db.session.add(Tasks(id=4, task_name="P2T1", project_id=2))
-    db.session.add(Tasks(id=5, task_name="P2T2", project_id=2))
-    db.session.add(Tasks(id=6, task_name="P2T3", project_id=2))
-    db.session.add(Tasks(id=7, task_name="P2T4", project_id=2))
-    db.session.add(Tasks(id=8, task_name="P2T5", project_id=2))
+    db.session.add(Task(id=1, name="P1T1", project_id=1))
+    db.session.add(Task(id=2, name="P1T2", project_id=1))
+    db.session.add(Task(id=3, name="P1T3", project_id=1))
+    db.session.add(Task(id=4, name="P2T1", project_id=2))
+    db.session.add(Task(id=5, name="P2T2", project_id=2))
+    db.session.add(Task(id=6, name="P2T3", project_id=2))
+    db.session.add(Task(id=7, name="P2T4", project_id=2))
+    db.session.add(Task(id=8, name="P2T5", project_id=2))
     db.session.commit()
 except exc.SQLAlchemyError as err:
     log.error("Task creation error: %s", err)

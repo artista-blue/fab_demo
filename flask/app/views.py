@@ -5,7 +5,7 @@ from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView
 from flask_appbuilder.models.filters import BaseFilter
 from app import appbuilder, db
-from app.models import Projects, Tasks, TaskProgress
+from app.models import Project, Task, TaskProgress
 
 
 # pylint: disable=R0903, W0143
@@ -30,7 +30,7 @@ class TaskProgressModelView(ModelView):
     """Model View for the TaskProgress Table"""
     datamodel = SQLAInterface(TaskProgress)
 
-    label_columns = {'task_progress':'Task Progress'}
+    label_columns = {'id':'Task Progress'}
     list_columns = ['task_id','start_time','end_time','created_by','created_on',
                     'changed_by','changed_on','status','comment']
     edit_exclude_columns = ['created_by', 'created_on', 'changed_by', 'changed_on']
@@ -45,30 +45,33 @@ class TaskProgressModelView(ModelView):
     base_filters = [['', CustomAdminFilter, None]]
 
 class TaskModelView(ModelView):
-    """Model View for the Tasks Table"""
-    datamodel = SQLAInterface(Tasks)
+    """Model View for the Task Table"""
+    datamodel = SQLAInterface(Task)
     related_views = [TaskProgressModelView]
 
-    label_columns = {'tasks':'Tasks'}
-    list_columns = ['id','task_name','description','project_id']
+    label_columns = {
+        'id':'Task',
+        'project_url':'Project',
+    }
+    list_columns = ['id','name','description','project_url']
     show_fieldsets = [
         (
-            'Tasks',
-            {'fields': ['id', 'task_name', 'description', 'project_id']}
+            'Task',
+            {'fields': ['id', 'name', 'description', 'project_url']}
         ),
     ]
 
 class ProjectModelView(ModelView):
-    """Model View for the Projects Table"""
-    datamodel = SQLAInterface(Projects)
+    """Model View for the Project Table"""
+    datamodel = SQLAInterface(Project)
     related_views = [TaskModelView]
 
-    label_columns = {'projects':'Projects'}
-    list_columns = ['id','project_name','description']
+    label_columns = {'id':'Project'}
+    list_columns = ['id','name','description']
     show_fieldsets = [
         (
-            'Projects',
-            {'fields': ['id', 'project_name', 'description']}
+            'Project',
+            {'fields': ['id', 'name', 'description']}
         ),
     ]
 
@@ -78,20 +81,20 @@ appbuilder.add_view(
     ProjectModelView,
     "List Projects",
     icon = "fa-folder-open-o",
-    category = "Projects",
+    category = "Project",
     category_icon = "fa-envelope"
 )
 appbuilder.add_view(
     TaskModelView,
     "List Tasks",
     icon = "fa-folder-open-o",
-    category = "Tasks",
+    category = "Task",
     category_icon = "fa-envelope"
 )
 appbuilder.add_view(
     TaskProgressModelView,
     "List Task Progress",
     icon = "fa-folder-open-o",
-    category = "Tasks Projects",
+    category = "Task Progress",
     category_icon = "fa-envelope"
 )
