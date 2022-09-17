@@ -1,0 +1,5 @@
+#!/bin/sh
+
+flask fab create-admin --username admin --firstname Firstname --lastname Lastname --email admin@example.com --password admin
+sleep 2
+python load_data.py
