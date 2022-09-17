@@ -8,7 +8,7 @@ docker-compose exec web /bin/bash ./init_db
 ```
 
 ### Login
-http://localhost:5000   (user:password: admin:admin)
+http://localhost:5001   (user:password: admin:admin)
 
 ### Cleanup
 ```
